@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">TrainingTennis</string>
+    <string name="action_settings">Opzioni</string>
+    <string name="action_exit">Esci</string>
+    <string name="hello_world">Ciao!</string>
+    <string name="type_training">Tipologia Allenamento</string>
+	<string name="type_training_desc">Seleziona la tipologia di allenamento desiderata</string>
+	<string name="time_training">Durata allenamento</string>
+	<string name="time_training_desc">Inserire la durata dell allenamento</string>
+	<string name="minutes">Minuti</string>
+	<string name="seconds">Secondi</string>
+	<string name="time_move">Durata spostamento</string>
+</resources>

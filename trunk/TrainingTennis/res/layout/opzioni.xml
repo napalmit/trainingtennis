@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+        <PreferenceCategory
+                android:title="@string/action_settings">
+                <ListPreference
+                        android:title="@string/type_training"
+                        android:summary="@string/type_training_desc"
+                        android:key="listPref"
+                        android:defaultValue="1"
+                        android:entries="@array/listArray"
+                        android:entryValues="@array/listValues" />
+                <PreferenceScreen
+	                android:key="SecondPrefScreen"
+	                android:title="@string/time_training"
+	                android:summary="@string/time_training_desc">
+	                <EditTextPreference
+	                        android:name="minuti"
+	                        android:inputType="numberDecimal|numberSigned"
+	                        android:title="@string/minutes"
+	                        android:defaultValue="0"
+	                        android:key="minuti" />
+	                <EditTextPreference
+	                        android:name="secondi"
+	                        android:inputType="numberDecimal|numberSigned"
+	                        android:title="@string/seconds"
+	                        android:defaultValue="0"
+	                        android:key="secondi" />
+        		</PreferenceScreen>
+        		<EditTextPreference
+	                android:name="durata_spostamento"
+	                android:summary="@string/seconds"
+	                android:defaultValue="4"
+	                android:title="@string/time_move"
+	                android:inputType="numberDecimal|numberSigned"
+	                android:key="durata_spostamento" />
+        </PreferenceCategory>
+</PreferenceScreen>
