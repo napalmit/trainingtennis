@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">TrainingTennis</string>
+    <string name="action_settings">Settings</string>
+    <string name="action_exit">Exit</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="type_training">Type Training</string>
+	<string name="type_training_desc">Type Training</string>
+	<string name="time_training">Type Training</string>
+	<string name="time_training_desc">Inserire la durata dell allenamento</string>
+	<string name="minutes">Minuti</string>
+	<string name="seconds">Secondi</string>
+</resources>

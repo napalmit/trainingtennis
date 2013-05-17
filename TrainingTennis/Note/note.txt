@@ -1,0 +1,5 @@
+preferenze
+
+--> tipo allenamento
+--> durata allenamento ( minuti / secondi)
+--> durata secondi spostamento ( secondi )
