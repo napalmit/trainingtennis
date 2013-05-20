@@ -197,7 +197,7 @@ public class Footwork extends Fragment {
 	}
 	
 	public void playSound(int tipoSuono){
-		//soundManager.playSound(tipoSuono); 
+		soundManager.playSound(tipoSuono);
 	}
 	
 	public long getDurationSound(int tipoSuono){
@@ -205,7 +205,7 @@ public class Footwork extends Fragment {
 	}
 	
 	public void playSoundNumero(int numero){
-		//soundManagerNumeri.playSound(numero); 
+		soundManagerNumeri.playSound(numero);
 	}
 	
 	@SuppressLint("UseValueOf")
