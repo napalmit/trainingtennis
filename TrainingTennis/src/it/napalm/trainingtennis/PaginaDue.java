@@ -21,7 +21,7 @@ public class PaginaDue extends Fragment {
 	         return null;
 	      }
 	      // inflate view from layout
-	      View view = (LinearLayout)inflater.inflate(R.layout.pagina_2,container,false);
+	      View view = (LinearLayout)inflater.inflate(R.layout.scatti_absolute,container,false);
 	      // update text
 	      TextView tv = (TextView) view.findViewById(R.id.tvText2);
 	      tv.setText(ptext);
