@@ -3,6 +3,8 @@
 
     <string name="app_name">TrainingTennis</string>
     <string name="action_settings">Opzioni</string>
+    <string name="action_settings_footwork">Opzioni Footwork</string>
+    <string name="action_settings_scatti">Opzioni Scatti</string>
     <string name="action_exit">Esci</string>
     <string name="hello_world">Ciao!</string>
     <string name="type_training">Tipologia Allenamento</string>
@@ -12,4 +14,8 @@
 	<string name="minutes">Minuti</string>
 	<string name="seconds">Secondi</string>
 	<string name="time_move">Durata spostamento</string>
+    <string name="seconds_scatto">Durata Scatto</string>
+    <string name="seconds_scatto_desc">Inserire la durata in secondi dello scatto</string>
+    <string name="pausa_scatto">Pausa Scatto</string>
+    <string name="pausa_scatto_desc">Inserire la durata in secondi della pausa fra gli scatti</string>
 </resources>

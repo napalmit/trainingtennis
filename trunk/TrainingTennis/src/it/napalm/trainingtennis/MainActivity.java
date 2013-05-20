@@ -49,14 +49,14 @@ public class MainActivity extends FragmentActivity {
 		getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 		
 		fragments.add(Fragment.instantiate(this,Footwork.class.getName()));
-	    fragments.add(Fragment.instantiate(this,PaginaDue.class.getName()));
+	    fragments.add(Fragment.instantiate(this,Scatto.class.getName()));
 	    fragments.add(Fragment.instantiate(this,PaginaTre.class.getName()));
 	    
 	    this.mPagerAdapter = new PagerAdapter(super.getSupportFragmentManager(),fragments);
 	    mPager = (CustomViewPager) super.findViewById(R.id.pager);
 	    mPager.setAdapter(this.mPagerAdapter);
 	    
-	    mPager.setPagingEnabled(false);
+	    mPager.setPagingEnabled(true);
 	}
 	
 
