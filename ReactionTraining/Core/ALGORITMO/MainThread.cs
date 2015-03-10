@@ -29,8 +29,9 @@ namespace Core.ALGORITMO
             //Start();    
         }
 
-        public void Start()
+        public int Start()
         {
+
             try
             {
                 /*
@@ -72,10 +73,25 @@ namespace Core.ALGORITMO
                     Console.WriteLine("riparto");
                 }
                 Console.WriteLine("finito");
+
+                foreach (Sensore sensore in LIST_SENSOR)
+                {
+                    sensore.Accendi();
+                }
+
+                Thread.Sleep(200);
+
+                foreach (Sensore sensore in LIST_SENSOR)
+                {
+                    sensore.Spegni();
+                }
+
+                return 1;
             }
             catch (Exception ex)
             {
                 Console.WriteLine("MainThread.Start: " + ex.Message);
+                return -1;
             }
         }
 

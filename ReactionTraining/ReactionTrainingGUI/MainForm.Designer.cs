@@ -41,8 +41,11 @@
             this.panelConfig = new System.Windows.Forms.Panel();
             this.buttonStart = new System.Windows.Forms.Button();
             this.panelAttivita = new System.Windows.Forms.Panel();
+            this.lblDurata = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
             this.serialPort1 = new System.IO.Ports.SerialPort(this.components);
             this.panelConfig.SuspendLayout();
+            this.panelAttivita.SuspendLayout();
             this.SuspendLayout();
             // 
             // comboSensori
@@ -188,10 +191,32 @@
             // 
             // panelAttivita
             // 
+            this.panelAttivita.Controls.Add(this.lblDurata);
+            this.panelAttivita.Controls.Add(this.label5);
             this.panelAttivita.Location = new System.Drawing.Point(12, 223);
             this.panelAttivita.Name = "panelAttivita";
             this.panelAttivita.Size = new System.Drawing.Size(984, 326);
             this.panelAttivita.TabIndex = 10;
+            // 
+            // lblDurata
+            // 
+            this.lblDurata.AutoSize = true;
+            this.lblDurata.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblDurata.Location = new System.Drawing.Point(523, 13);
+            this.lblDurata.Name = "lblDurata";
+            this.lblDurata.Size = new System.Drawing.Size(82, 31);
+            this.lblDurata.TabIndex = 9;
+            this.lblDurata.Text = "99:99";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label5.Location = new System.Drawing.Point(311, 13);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(213, 31);
+            this.label5.TabIndex = 8;
+            this.label5.Text = "Tempo Residuo:";
             // 
             // MainForm
             // 
@@ -209,6 +234,8 @@
             this.Text = "ReactionTrainingGUI";
             this.panelConfig.ResumeLayout(false);
             this.panelConfig.PerformLayout();
+            this.panelAttivita.ResumeLayout(false);
+            this.panelAttivita.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -227,6 +254,8 @@
         private System.Windows.Forms.Button buttonStart;
         private System.Windows.Forms.Panel panelAttivita;
         private System.IO.Ports.SerialPort serialPort1;
+        private System.Windows.Forms.Label lblDurata;
+        private System.Windows.Forms.Label label5;
     }
 }
 

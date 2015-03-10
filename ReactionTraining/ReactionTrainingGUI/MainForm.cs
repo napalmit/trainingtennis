@@ -15,7 +15,11 @@ namespace ReactionTrainingGUI
 {
     public partial class MainForm : Form
     {
-        public int STATO;
+        private delegate void DelegatoInt(int value);
+        public int STATO { get; set; }
+        private int SECONDS;
+        private ManualResetEvent pauseThreadTime = new ManualResetEvent(true);
+
         public MainForm()
         {
             InitializeComponent();
@@ -29,6 +33,7 @@ namespace ReactionTrainingGUI
                 STATO = Stato.FERMO;
                 panelConfig.Enabled = true;
                 panelAttivita.Hide();
+                buttonStart.Text = "START";
             }
             catch(Exception ex)
             {
@@ -52,7 +57,31 @@ namespace ReactionTrainingGUI
 
                     ThreadStart thread = new ThreadStart(() => FunzionePrincipale(config));
                     Thread t = new Thread(thread);
-                    t.Start();
+                    //t.Start();
+
+                    panelAttivita.Show();
+
+                    SetLblDurata(durataWorkout);
+
+                    ThreadStart threadTime = new ThreadStart(() => FunzioneTime(config));
+                    Thread time = new Thread(threadTime);
+                    time.Start();
+
+                    buttonStart.Text = "PAUSA";
+                }
+                else if (STATO == Stato.IN_AZIONE)
+                {
+                    //stoppare anche i thread del Core
+                    buttonStart.Text = "AVVIA";
+                    STATO = Stato.PAUSA;
+                    pauseThreadTime.Reset();
+                }
+                else if (STATO == Stato.PAUSA)
+                {
+                    //riattivare anche i thread del Core
+                    buttonStart.Text = "PAUSA";
+                    STATO = Stato.IN_AZIONE;
+                    pauseThreadTime.Set();
                 }
                 
             }
@@ -63,24 +92,67 @@ namespace ReactionTrainingGUI
             }
         }
 
+        private void SetLblDurata(int seconds)
+        {
+            try
+            {
+                SECONDS = seconds;
+                var timespan = TimeSpan.FromSeconds(seconds);
+                lblDurata.Text = timespan.ToString(@"mm\:ss");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("MainForm.SetLblDurata: " + ex.Message);            
+            }
+        }
+
+        private void FunzioneTime(Configurator config)
+        {
+            try
+            {
+                bool cycle = true;
+                while (cycle)
+                {
+                    pauseThreadTime.WaitOne(Timeout.Infinite);
+                    Thread.Sleep(1000);
+                    SECONDS--;
+                    if (SECONDS == 0)
+                        cycle = false;
+                    else
+                        this.Invoke(new DelegatoInt(SetLblDurata), SECONDS);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("MainForm.FunzioneTime: " + ex.Message);
+            }
+        }
+
         private void FunzionePrincipale(Configurator aConfig)
         {
             try
             {
                 MainThread main = new MainThread(aConfig);
-                main.Start();
+                int ritorna = main.Start();
+
+                if (ritorna == 1)
+                {
+                    //end
+                }
             }
             catch (Exception ex)
             {
                 Console.WriteLine("MainForm.FunzionePrincipale: " + ex.Message);
             }
         }
+
+        
     }
 
     public static class Stato
     {
         public static int FERMO = 0;
         public static int IN_AZIONE = 1;
-        public static int STOPPATO = 2;
+        public static int PAUSA = 2;
     }
 }
