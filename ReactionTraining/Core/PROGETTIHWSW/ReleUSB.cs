@@ -12,16 +12,18 @@ namespace Core.PROGETTIHWSW
         private string COM;
         private SerialPort SERIAL;
 
-        public ReleUSB(string comPort, SerialPort serialPort)
+        public event Action<string> RicevoDato;
+
+        public ReleUSB(string comPort)
         {
             COM = comPort;
-            SERIAL = serialPort;
         }
 
         public void Connect()
         {
             try
             {
+                SERIAL = new SerialPort();
                 SERIAL.PortName = COM;
                 SERIAL.BaudRate = 115200;
                 SERIAL.Parity = Parity.None;
@@ -30,34 +32,55 @@ namespace Core.PROGETTIHWSW
                 SERIAL.ReadTimeout = 500;
                 SERIAL.WriteTimeout = 500;
                 SERIAL.Handshake = Handshake.None;
+                SERIAL.DataReceived += new SerialDataReceivedEventHandler(mySerialPort_DataReceived);
                 try
                 {
+                    Console.WriteLine("APRO SERIAL");
                     SERIAL.Open();
+                    Console.WriteLine("APERTA SERIAL");
                 }
                 catch (Exception ex)
                 {
                     Console.WriteLine("ReleUSB.Connect : " + ex.Message);
-                    throw ex;
                 }
             }
             catch (Exception ex)
             {
                 Console.WriteLine("ReleUSB.Connect: " + ex.Message);
                 Console.WriteLine("ReleUSB.Connect: " + ex.StackTrace);
-                throw ex;
             }
+        }
+
+        private void SERIAL_DataReceived(object sender, SerialDataReceivedEventArgs e)
+        {
+        }
+
+        private void mySerialPort_DataReceived(object sender, SerialDataReceivedEventArgs e)
+        {
+            
+            try
+            {
+                string s = SERIAL.ReadExisting();
+                RicevoDato.Invoke(s);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("ReleUSB.mySerialPort_DataReceived:" + ex.Message);
+            }
+
         }
 
         public void InviaComando(string command)
         {
             try
             {
+                //Console.WriteLine("INVIO:" + command);
+                Clean();
                 SERIAL.Write(command);
             }
             catch (Exception ex)
             {
                 Console.WriteLine("ReleUSB.InviaComando:" + ex.Message);
-                throw ex;
             }
         }
 
@@ -71,7 +94,6 @@ namespace Core.PROGETTIHWSW
             catch (Exception ex)
             {
                 Console.WriteLine("ReleUSB.RiceviDati:" + ex.Message);
-                throw ex;
             }
             return ret;
         }
@@ -89,7 +111,17 @@ namespace Core.PROGETTIHWSW
             {
                 Console.WriteLine("LedRGBCOM.Clean: " + ex.Message);
                 Console.WriteLine("LedRGBCOM.Clean: " + ex.StackTrace);
-                throw ex;
+            }
+        }
+
+        public void Close()
+        {
+            try
+            {
+                SERIAL.Close();
+            }
+            catch (Exception ex)
+            {
             }
         }
 
@@ -142,7 +174,6 @@ namespace Core.PROGETTIHWSW
             catch (Exception ex)
             {
                 Console.WriteLine("ReleUSB.GetCmdAndResponse:"+ex.Message);
-                throw ex;
             }
 
             return lista;

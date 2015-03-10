@@ -9,17 +9,15 @@ namespace Core.OBJECT
 {
     public class Configurator
     {
-        public Configurator(string comPort, SerialPort serialPort, int numberOfSensor, int valoreMinorePausa, int valoreMaggiorePausa, int durata)
+        public Configurator(string comPort, int numberOfSensor, int valoreMinorePausa, int valoreMaggiorePausa, int durata)
         {
             COM_PORT = comPort;
-            SERIAL_PORT = serialPort;
             NUMBER_OF_SENSOR = numberOfSensor;
             VALORE_MINORE_PAUSA = valoreMinorePausa;
             VALORE_MAGGIORE_PAUSA = valoreMaggiorePausa;
             DURATA = durata;
         }
         public string COM_PORT { get; private set; }
-        public SerialPort SERIAL_PORT { get; private set; }
         public int NUMBER_OF_SENSOR { get; private set; }
         public int VALORE_MINORE_PAUSA { get; private set; }
         public int VALORE_MAGGIORE_PAUSA { get; private set; }

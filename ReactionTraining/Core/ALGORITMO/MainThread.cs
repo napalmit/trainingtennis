@@ -17,7 +17,8 @@ namespace Core.ALGORITMO
         private EventWaitHandle waitHandle;
         private Random RND = new Random();
         private Sensore SENSORE_USCITO;
-        private bool CYCLE = true;       
+        private bool CYCLE = true;
+        private bool CYCLE_SECOND = true;
         private DatiAcquisiti DATO_ACQUISITO;
 
         public List<DatiAcquisiti> LIST_DATI_ACQUISITI { get; private set; }
@@ -29,6 +30,8 @@ namespace Core.ALGORITMO
         private int SECONDS;
 
         public event Action<int> SecondiRimanenti;
+
+        
 
         public MainThread(Configurator aConfigurator)
         {
@@ -52,6 +55,11 @@ namespace Core.ALGORITMO
                  * 
                  * 
                  */
+                foreach (Sensore sensore in LIST_SENSOR)
+                {
+                    sensore.Spegni();
+                }
+
                 LIST_DATI_ACQUISITI = new List<DatiAcquisiti>();
                 waitHandle = new EventWaitHandle(false, EventResetMode.AutoReset);
                 Console.WriteLine("START");
@@ -109,14 +117,14 @@ namespace Core.ALGORITMO
         {
             try
             {
-                bool schiacciato = true;
+                CYCLE_SECOND = true;
                 Console.WriteLine("in attesa di essere schiacciato");
-                while (schiacciato)
+                while (CYCLE_SECOND)
                 {
                     secondoThread.WaitOne(Timeout.Infinite);
                     RELE.InviaComando(SENSORE_USCITO.Ingresso());
-                    string ricezione = RELE.RiceviDati();
-                    Console.WriteLine("ricezione: " + ricezione);
+                    /*string ricezione = RELE.RiceviDati();
+                    //Console.WriteLine("ricezione: " + ricezione);
                     if (ricezione.Equals(SENSORE_USCITO.IngressoAlto))
                     {
                         SENSORE_USCITO.STATO = StatoSensore.DISATTIVO;
@@ -130,7 +138,9 @@ namespace Core.ALGORITMO
                     else
                     {
                         Thread.Sleep(10);
-                    }
+                    }*/
+
+                    Thread.Sleep(10);
                 }
                 waitHandle.Set();
             }
@@ -182,11 +192,13 @@ namespace Core.ALGORITMO
             try
             {
                 #region relay
-                RELE = new ReleUSB(CONFIGURATOR.COM_PORT, CONFIGURATOR.SERIAL_PORT);
+                RELE = new ReleUSB(CONFIGURATOR.COM_PORT);
+                RELE.RicevoDato += RELE_RicevoDato;
                 RELE.Connect();
                 #endregion
 
                 #region sensori
+                Console.WriteLine("Setto sensori");
                 for (int i = 1; i <= CONFIGURATOR.NUMBER_OF_SENSOR; i++)
                 {
                     Sensore sensore = new Sensore();
@@ -197,12 +209,38 @@ namespace Core.ALGORITMO
                     sensore.Spegni();
                     LIST_SENSOR.Add(sensore);
                 }
+                Console.WriteLine("end Setto sensori");
                 #endregion
             }
             catch (Exception ex)
             {
                 Console.WriteLine("MainThread.Init: " + ex.Message);
             }    
+        }
+
+        private void RELE_RicevoDato(string obj)
+        {
+            
+            try
+            {
+                //Console.WriteLine("RELE_RicevoDato:" + obj + "|");
+                //Console.WriteLine("SENSORE_USCITO.IngressoAlto:" + SENSORE_USCITO.IngressoAlto + "|");
+                if (SENSORE_USCITO != null && obj.Equals(SENSORE_USCITO.IngressoAlto))
+                {
+                    Console.WriteLine(SENSORE_USCITO.IngressoAlto + "!RICEVO qua:" + obj);
+                    SENSORE_USCITO.STATO = StatoSensore.DISATTIVO;
+                    RELE.InviaComando(SENSORE_USCITO.Spegni());
+                    SENSORE_USCITO = null;
+                    CYCLE_SECOND = false;
+                    DATO_ACQUISITO.DATA_DISATTIVAZIONE = DateTime.Now;
+                    LIST_DATI_ACQUISITI.Add(DATO_ACQUISITO);
+                    DATO_ACQUISITO = null;
+                }
+            }
+            catch (Exception ex) 
+            {
+                Console.WriteLine("MainThread.RELE_RicevoDato: " + ex.Message);
+            }
         }
 
         public void PauseThread()
@@ -217,6 +255,11 @@ namespace Core.ALGORITMO
             mainThread.Set();
             secondoThread.Set();
             timeThread.Set();
+        }
+
+        public void CloseSerialPort()
+        {
+            RELE.Close();
         }
     }
 }

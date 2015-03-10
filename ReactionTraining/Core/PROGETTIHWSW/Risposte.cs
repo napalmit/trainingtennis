@@ -20,7 +20,7 @@ namespace Core.PROGETTIHWSW
         public static string AccendiRelay4 = "Q";
         public static string SpegniRelay4 = "R";
 
-        public static string Ingresso1Alto = "S";
+        public static string Ingresso1Alto = "S\0";
         public static string Ingresso1Basso = "T";
 
         public static string Ingresso2Alto = "U";

@@ -9,3 +9,14 @@ D:\Sviluppo_mio\ReactionTraining\ReactionTrainingGUI\obj\Release\ReactionTrainin
 D:\Sviluppo_mio\ReactionTraining\ReactionTrainingGUI\obj\Release\ReactionTrainingGUI.MainForm.resources
 D:\Sviluppo_mio\ReactionTraining\ReactionTrainingGUI\bin\Release\Core.dll
 D:\Sviluppo_mio\ReactionTraining\ReactionTrainingGUI\bin\Release\Core.pdb
+D:\Sviluppo\ReactionTraining\ReactionTrainingGUI\bin\Release\ReactionTrainingGUI.exe.config
+D:\Sviluppo\ReactionTraining\ReactionTrainingGUI\obj\Release\ReactionTrainingGUI.exe
+D:\Sviluppo\ReactionTraining\ReactionTrainingGUI\obj\Release\ReactionTrainingGUI.pdb
+D:\Sviluppo\ReactionTraining\ReactionTrainingGUI\bin\Release\ReactionTrainingGUI.exe
+D:\Sviluppo\ReactionTraining\ReactionTrainingGUI\bin\Release\ReactionTrainingGUI.pdb
+D:\Sviluppo\ReactionTraining\ReactionTrainingGUI\bin\Release\Core.dll
+D:\Sviluppo\ReactionTraining\ReactionTrainingGUI\bin\Release\Core.pdb
+D:\Sviluppo\ReactionTraining\ReactionTrainingGUI\obj\Release\ReactionTrainingGUI.csprojResolveAssemblyReference.cache
+D:\Sviluppo\ReactionTraining\ReactionTrainingGUI\obj\Release\ReactionTrainingGUI.MainForm.resources
+D:\Sviluppo\ReactionTraining\ReactionTrainingGUI\obj\Release\ReactionTrainingGUI.Properties.Resources.resources
+D:\Sviluppo\ReactionTraining\ReactionTrainingGUI\obj\Release\ReactionTrainingGUI.csproj.GenerateResource.Cache
