@@ -52,11 +52,11 @@ namespace ReactionTrainingGUI
                     int pausaTo = Int32.Parse(comboPausaTo.SelectedItem.ToString());
                     panelConfig.Enabled = false;
                     STATO = Stato.IN_AZIONE;
-                    Configurator config = new Configurator("COM8", serialPort1, numeroSensori, pausaFrom, pausaTo, durataWorkout * 1000);
+                    Configurator config = new Configurator("COM5", numeroSensori, pausaFrom, pausaTo, durataWorkout * 1000);
 
                     ThreadStart thread = new ThreadStart(() => FunzionePrincipale(config));
                     Thread t = new Thread(thread);
-                    //t.Start();
+                    t.Start();
 
                     panelAttivita.Show();
 
@@ -147,6 +147,11 @@ namespace ReactionTrainingGUI
         private void MAIN_THREAD_SecondiRimanenti(int obj)
         {
             this.Invoke(new DelegatoInt(SetLblDurata), obj);
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            MAIN_THREAD.CloseSerialPort();
         }
 
         

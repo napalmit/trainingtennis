@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.comboSensori = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
@@ -43,7 +42,7 @@
             this.panelAttivita = new System.Windows.Forms.Panel();
             this.lblDurata = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
-            this.serialPort1 = new System.IO.Ports.SerialPort(this.components);
+            this.button1 = new System.Windows.Forms.Button();
             this.panelConfig.SuspendLayout();
             this.panelAttivita.SuspendLayout();
             this.SuspendLayout();
@@ -218,11 +217,22 @@
             this.label5.TabIndex = 8;
             this.label5.Text = "Tempo Residuo:";
             // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(875, 101);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.TabIndex = 11;
+            this.button1.Text = "button1";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1008, 561);
+            this.ClientSize = new System.Drawing.Size(1008, 562);
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.panelAttivita);
             this.Controls.Add(this.buttonStart);
             this.Controls.Add(this.panelConfig);
@@ -253,9 +263,9 @@
         private System.Windows.Forms.Panel panelConfig;
         private System.Windows.Forms.Button buttonStart;
         private System.Windows.Forms.Panel panelAttivita;
-        private System.IO.Ports.SerialPort serialPort1;
         private System.Windows.Forms.Label lblDurata;
         private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Button button1;
     }
 }
 
