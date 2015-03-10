@@ -22,6 +22,14 @@ namespace Core.ALGORITMO
 
         public List<DatiAcquisiti> LIST_DATI_ACQUISITI { get; private set; }
 
+        private ManualResetEvent mainThread = new ManualResetEvent(true);
+        private ManualResetEvent timeThread = new ManualResetEvent(true);
+        private ManualResetEvent secondoThread = new ManualResetEvent(true);
+
+        private int SECONDS;
+
+        public event Action<int> SecondiRimanenti;
+
         public MainThread(Configurator aConfigurator)
         {
             CONFIGURATOR = aConfigurator;
@@ -47,11 +55,13 @@ namespace Core.ALGORITMO
                 LIST_DATI_ACQUISITI = new List<DatiAcquisiti>();
                 waitHandle = new EventWaitHandle(false, EventResetMode.AutoReset);
                 Console.WriteLine("START");
+                SECONDS = CONFIGURATOR.DURATA;
                 ThreadStart timeThread = new ThreadStart(TimeThread);
                 Thread time = new Thread(timeThread);
                 time.Start();
                 while (CYCLE)
                 {
+                    mainThread.WaitOne(Timeout.Infinite);
                     int pausa = RND.Next(CONFIGURATOR.VALORE_MINORE_PAUSA, CONFIGURATOR.VALORE_MAGGIORE_PAUSA);
                     Console.WriteLine("valore attesa: " + pausa + " ms");
                     Thread.Sleep(pausa);
@@ -65,7 +75,7 @@ namespace Core.ALGORITMO
                     Thread t = new Thread(secondoThread);
                     t.Start();
 
-                    if (waitHandle.WaitOne(10000000, true))
+                    if (waitHandle.WaitOne(Timeout.Infinite, true))
                     {
                         Console.WriteLine("timeout");
                     }
@@ -102,7 +112,8 @@ namespace Core.ALGORITMO
                 bool schiacciato = true;
                 Console.WriteLine("in attesa di essere schiacciato");
                 while (schiacciato)
-                {                   
+                {
+                    secondoThread.WaitOne(Timeout.Infinite);
                     RELE.InviaComando(SENSORE_USCITO.Ingresso());
                     string ricezione = RELE.RiceviDati();
                     Console.WriteLine("ricezione: " + ricezione);
@@ -133,17 +144,31 @@ namespace Core.ALGORITMO
         {
             try
             {
-                bool cicla = true;
+                bool cycle = true;
                 DateTime dataStop = DateTime.Now.AddMilliseconds(CONFIGURATOR.DURATA);
-                while (cicla)
+                while (cycle)
                 {
-                    if (DateTime.Now.CompareTo(dataStop) > 0)
+                    timeThread.WaitOne(Timeout.Infinite);
+                    Thread.Sleep(1000);
+                    SECONDS--;
+                    if (SECONDS == 0)
+                    {
+                        cycle = false;
+                        CYCLE = false;
+                    }                        
+                    else
+                    {
+                        //invio un evento con SECONDS rimanenti COME PARAMETRO
+                        SecondiRimanenti.Invoke(SECONDS);
+                    }
+                        //this.Invoke(new DelegatoInt(SetLblDurata), SECONDS);
+                    /*if (DateTime.Now.CompareTo(dataStop) > 0)
                     {
                         cicla = false;
                         CYCLE = false;
                     }
                     else
-                        Thread.Sleep(1000);
+                        Thread.Sleep(1000);*/
                 }
             }
             catch (Exception ex)
@@ -180,5 +205,18 @@ namespace Core.ALGORITMO
             }    
         }
 
+        public void PauseThread()
+        {
+            mainThread.Reset();
+            secondoThread.Reset();
+            timeThread.Reset();
+        }
+
+        public void RestartThread()
+        {
+            mainThread.Set();
+            secondoThread.Set();
+            timeThread.Set();
+        }
     }
 }
