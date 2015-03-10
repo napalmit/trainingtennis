@@ -1,5 +1,0 @@
-D:\Sviluppo_mio\ReactionTraining\Core\bin\Release\Core.dll
-D:\Sviluppo_mio\ReactionTraining\Core\bin\Release\Core.pdb
-D:\Sviluppo_mio\ReactionTraining\Core\obj\Release\Core.dll
-D:\Sviluppo_mio\ReactionTraining\Core\obj\Release\Core.pdb
-D:\Sviluppo_mio\ReactionTraining\Core\obj\Release\Core.csprojResolveAssemblyReference.cache
