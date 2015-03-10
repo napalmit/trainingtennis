@@ -17,8 +17,7 @@ namespace ReactionTrainingGUI
     {
         private delegate void DelegatoInt(int value);
         public int STATO { get; set; }
-        private int SECONDS;
-        private ManualResetEvent pauseThreadTime = new ManualResetEvent(true);
+        private MainThread MAIN_THREAD;
 
         public MainForm()
         {
@@ -62,10 +61,9 @@ namespace ReactionTrainingGUI
                     panelAttivita.Show();
 
                     SetLblDurata(durataWorkout);
-
-                    ThreadStart threadTime = new ThreadStart(() => FunzioneTime(config));
+                    /*ThreadStart threadTime = new ThreadStart(() => FunzioneTime(config));
                     Thread time = new Thread(threadTime);
-                    time.Start();
+                    time.Start();*/
 
                     buttonStart.Text = "PAUSA";
                 }
@@ -74,14 +72,14 @@ namespace ReactionTrainingGUI
                     //stoppare anche i thread del Core
                     buttonStart.Text = "AVVIA";
                     STATO = Stato.PAUSA;
-                    pauseThreadTime.Reset();
+                    MAIN_THREAD.PauseThread();
                 }
                 else if (STATO == Stato.PAUSA)
                 {
                     //riattivare anche i thread del Core
                     buttonStart.Text = "PAUSA";
                     STATO = Stato.IN_AZIONE;
-                    pauseThreadTime.Set();
+                    MAIN_THREAD.RestartThread();
                 }
                 
             }
@@ -96,7 +94,6 @@ namespace ReactionTrainingGUI
         {
             try
             {
-                SECONDS = seconds;
                 var timespan = TimeSpan.FromSeconds(seconds);
                 lblDurata.Text = timespan.ToString(@"mm\:ss");
             }
@@ -106,7 +103,7 @@ namespace ReactionTrainingGUI
             }
         }
 
-        private void FunzioneTime(Configurator config)
+        /*private void FunzioneTime(Configurator config)
         {
             try
             {
@@ -126,14 +123,15 @@ namespace ReactionTrainingGUI
             {
                 Console.WriteLine("MainForm.FunzioneTime: " + ex.Message);
             }
-        }
+        }*/
 
         private void FunzionePrincipale(Configurator aConfig)
         {
             try
             {
-                MainThread main = new MainThread(aConfig);
-                int ritorna = main.Start();
+                MAIN_THREAD = new MainThread(aConfig);
+                MAIN_THREAD.SecondiRimanenti += MAIN_THREAD_SecondiRimanenti; 
+                int ritorna = MAIN_THREAD.Start();
 
                 if (ritorna == 1)
                 {
@@ -144,6 +142,11 @@ namespace ReactionTrainingGUI
             {
                 Console.WriteLine("MainForm.FunzionePrincipale: " + ex.Message);
             }
+        }
+
+        private void MAIN_THREAD_SecondiRimanenti(int obj)
+        {
+            this.Invoke(new DelegatoInt(SetLblDurata), obj);
         }
 
         
