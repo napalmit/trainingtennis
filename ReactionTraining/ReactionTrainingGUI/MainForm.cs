@@ -61,9 +61,6 @@ namespace ReactionTrainingGUI
                     panelAttivita.Show();
 
                     SetLblDurata(durataWorkout);
-                    /*ThreadStart threadTime = new ThreadStart(() => FunzioneTime(config));
-                    Thread time = new Thread(threadTime);
-                    time.Start();*/
 
                     buttonStart.Text = "PAUSA";
                 }
@@ -102,28 +99,6 @@ namespace ReactionTrainingGUI
                 Console.WriteLine("MainForm.SetLblDurata: " + ex.Message);            
             }
         }
-
-        /*private void FunzioneTime(Configurator config)
-        {
-            try
-            {
-                bool cycle = true;
-                while (cycle)
-                {
-                    pauseThreadTime.WaitOne(Timeout.Infinite);
-                    Thread.Sleep(1000);
-                    SECONDS--;
-                    if (SECONDS == 0)
-                        cycle = false;
-                    else
-                        this.Invoke(new DelegatoInt(SetLblDurata), SECONDS);
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("MainForm.FunzioneTime: " + ex.Message);
-            }
-        }*/
 
         private void FunzionePrincipale(Configurator aConfig)
         {
