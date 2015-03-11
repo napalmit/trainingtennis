@@ -37,7 +37,6 @@ namespace Core.ALGORITMO
         {
             CONFIGURATOR = aConfigurator;
             Init();
-            //Start();    
         }
 
         public int Start()
@@ -123,23 +122,6 @@ namespace Core.ALGORITMO
                 {
                     secondoThread.WaitOne(Timeout.Infinite);
                     RELE.InviaComando(SENSORE_USCITO.Ingresso());
-                    /*string ricezione = RELE.RiceviDati();
-                    //Console.WriteLine("ricezione: " + ricezione);
-                    if (ricezione.Equals(SENSORE_USCITO.IngressoAlto))
-                    {
-                        SENSORE_USCITO.STATO = StatoSensore.DISATTIVO;
-                        RELE.InviaComando(SENSORE_USCITO.Spegni());
-                        SENSORE_USCITO = null;
-                        schiacciato = false;
-                        DATO_ACQUISITO.DATA_DISATTIVAZIONE = DateTime.Now;
-                        LIST_DATI_ACQUISITI.Add(DATO_ACQUISITO);
-                        DATO_ACQUISITO = null;
-                    }
-                    else
-                    {
-                        Thread.Sleep(10);
-                    }*/
-
                     Thread.Sleep(10);
                 }
                 waitHandle.Set();
@@ -171,14 +153,6 @@ namespace Core.ALGORITMO
                         //invio un evento con SECONDS rimanenti COME PARAMETRO
                         SecondiRimanenti.Invoke(SECONDS);
                     }
-                        //this.Invoke(new DelegatoInt(SetLblDurata), SECONDS);
-                    /*if (DateTime.Now.CompareTo(dataStop) > 0)
-                    {
-                        cicla = false;
-                        CYCLE = false;
-                    }
-                    else
-                        Thread.Sleep(1000);*/
                 }
             }
             catch (Exception ex)
@@ -223,11 +197,8 @@ namespace Core.ALGORITMO
             
             try
             {
-                //Console.WriteLine("RELE_RicevoDato:" + obj + "|");
-                //Console.WriteLine("SENSORE_USCITO.IngressoAlto:" + SENSORE_USCITO.IngressoAlto + "|");
                 if (SENSORE_USCITO != null && obj.Equals(SENSORE_USCITO.IngressoAlto))
                 {
-                    Console.WriteLine(SENSORE_USCITO.IngressoAlto + "!RICEVO qua:" + obj);
                     SENSORE_USCITO.STATO = StatoSensore.DISATTIVO;
                     RELE.InviaComando(SENSORE_USCITO.Spegni());
                     SENSORE_USCITO = null;
