@@ -31,5 +31,6 @@ namespace Core.PROGETTIHWSW
 
         public static string Ingresso4Alto = "J\0";
         public static string Ingresso4Basso = "K\0";
+		
     }
 }
