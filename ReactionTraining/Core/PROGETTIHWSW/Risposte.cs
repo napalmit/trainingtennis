@@ -21,15 +21,15 @@ namespace Core.PROGETTIHWSW
         public static string SpegniRelay4 = "R";
 
         public static string Ingresso1Alto = "S\0";
-        public static string Ingresso1Basso = "T";
+        public static string Ingresso1Basso = "T\0";
 
-        public static string Ingresso2Alto = "U";
-        public static string Ingresso2Basso = "V";
+        public static string Ingresso2Alto = "U\0";
+        public static string Ingresso2Basso = "V\0";
 
-        public static string Ingresso3Alto = "W";
-        public static string Ingresso3Basso = "Y";
+        public static string Ingresso3Alto = "W\0";
+        public static string Ingresso3Basso = "Y\0";
 
-        public static string Ingresso4Alto = "J";
-        public static string Ingresso4Basso = "K";
+        public static string Ingresso4Alto = "J\0";
+        public static string Ingresso4Basso = "K\0";
     }
 }
