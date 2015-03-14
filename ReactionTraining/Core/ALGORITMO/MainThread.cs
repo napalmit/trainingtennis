@@ -54,15 +54,12 @@ namespace Core.ALGORITMO
                  * 
                  * 
                  */
-                foreach (Sensore sensore in LIST_SENSOR)
-                {
-                    sensore.Spegni();
-                }
+                CountDownStart(300);
 
                 LIST_DATI_ACQUISITI = new List<DatiAcquisiti>();
                 waitHandle = new EventWaitHandle(false, EventResetMode.AutoReset);
                 Console.WriteLine("START");
-                SECONDS = CONFIGURATOR.DURATA;
+                SECONDS = CONFIGURATOR.DURATA / 1000;
                 ThreadStart timeThread = new ThreadStart(TimeThread);
                 Thread time = new Thread(timeThread);
                 time.Start();
@@ -72,7 +69,7 @@ namespace Core.ALGORITMO
                     int pausa = RND.Next(CONFIGURATOR.VALORE_MINORE_PAUSA, CONFIGURATOR.VALORE_MAGGIORE_PAUSA);
                     Console.WriteLine("valore attesa: " + pausa + " ms");
                     Thread.Sleep(pausa);
-                    int sensoreUscito = RND.Next(0, LIST_SENSOR.Count - 1);
+                    int sensoreUscito = RND.Next(0, LIST_SENSOR.Count);
                     Console.WriteLine("sensoreUscito: " + sensoreUscito);
                     SENSORE_USCITO = LIST_SENSOR.ElementAt(sensoreUscito);
                     SENSORE_USCITO.STATO = StatoSensore.ATTIVO;
@@ -91,17 +88,7 @@ namespace Core.ALGORITMO
                 }
                 Console.WriteLine("finito");
 
-                foreach (Sensore sensore in LIST_SENSOR)
-                {
-                    sensore.Accendi();
-                }
-
-                Thread.Sleep(200);
-
-                foreach (Sensore sensore in LIST_SENSOR)
-                {
-                    sensore.Spegni();
-                }
+                StopRele();
 
                 return 1;
             }
@@ -109,6 +96,54 @@ namespace Core.ALGORITMO
             {
                 Console.WriteLine("MainThread.Start: " + ex.Message);
                 return -1;
+            }
+        }
+
+
+        private void CountDownStart(int millesec)
+        {
+            try
+            {
+                for (int i = 0; i < 3; i++ )
+                {
+                    foreach (Sensore sensore in LIST_SENSOR)
+                    {
+                        RELE.InviaComando(sensore.Accendi());
+                    }
+                    Thread.Sleep(millesec);
+                    foreach (Sensore sensore in LIST_SENSOR)
+                    {
+                        RELE.InviaComando(sensore.Spegni());
+                    }
+                    Thread.Sleep(1000 - millesec);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("MainThread.CountDownStart: " + ex.Message);
+            }
+        }
+
+        private void StopRele()
+        {
+            try
+            {
+                for (int i = 0; i < 3; i++)
+                {
+                    foreach (Sensore sensore in LIST_SENSOR)
+                    {
+                        RELE.InviaComando(sensore.Accendi());
+                    }
+                    Thread.Sleep(2000);
+                    foreach (Sensore sensore in LIST_SENSOR)
+                    {
+                        RELE.InviaComando(sensore.Spegni());
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("MainThread.StopRele: " + ex.Message);
             }
         }
 
@@ -151,6 +186,7 @@ namespace Core.ALGORITMO
                     else
                     {
                         //invio un evento con SECONDS rimanenti COME PARAMETRO
+                        Console.WriteLine("invio secondi:"+SECONDS);
                         SecondiRimanenti.Invoke(SECONDS);
                     }
                 }
@@ -180,7 +216,7 @@ namespace Core.ALGORITMO
                     sensore.NAME = "sensore numero " + i;
                     sensore.STATO = StatoSensore.DISATTIVO;
                     sensore.CaricaComandi(RELE.GetCmdAndResponse(i));
-                    sensore.Spegni();
+                    RELE.InviaComando(sensore.Spegni());
                     LIST_SENSOR.Add(sensore);
                 }
                 Console.WriteLine("end Setto sensori");
@@ -197,7 +233,9 @@ namespace Core.ALGORITMO
             
             try
             {
-                if (SENSORE_USCITO != null && obj.Equals(SENSORE_USCITO.IngressoAlto))
+                //if (SENSORE_USCITO != null)
+                 //   Console.WriteLine("USCITO:" + SENSORE_USCITO.IngressoBasso+"|");
+                if (SENSORE_USCITO != null && obj.Equals(SENSORE_USCITO.IngressoBasso))
                 {
                     SENSORE_USCITO.STATO = StatoSensore.DISATTIVO;
                     RELE.InviaComando(SENSORE_USCITO.Spegni());

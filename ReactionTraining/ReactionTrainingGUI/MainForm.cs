@@ -92,6 +92,7 @@ namespace ReactionTrainingGUI
             try
             {
                 var timespan = TimeSpan.FromSeconds(seconds);
+                Console.WriteLine("timespan: " + timespan);  
                 lblDurata.Text = timespan.ToString(@"mm\:ss");
             }
             catch (Exception ex)
@@ -110,7 +111,11 @@ namespace ReactionTrainingGUI
 
                 if (ritorna == 1)
                 {
-                    //end
+                    Console.WriteLine("FINITO");
+                    foreach(DatiAcquisiti dato in MAIN_THREAD.LIST_DATI_ACQUISITI)
+                    {
+                        Console.WriteLine(dato.DifferenceSeconds());
+                    }
                 }
             }
             catch (Exception ex)
@@ -121,6 +126,7 @@ namespace ReactionTrainingGUI
 
         private void MAIN_THREAD_SecondiRimanenti(int obj)
         {
+            Console.WriteLine("ricevo secondi:" + obj);
             this.Invoke(new DelegatoInt(SetLblDurata), obj);
         }
 
