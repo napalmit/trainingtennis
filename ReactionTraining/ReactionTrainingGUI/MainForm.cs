@@ -1,9 +1,11 @@
 ﻿using Core.ALGORITMO;
 using Core.OBJECT;
+using DbLinq.Sqlite;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Data.SQLite;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -18,6 +20,8 @@ namespace ReactionTrainingGUI
         private delegate void DelegatoInt(int value);
         public int STATO { get; set; }
         private MainThread MAIN_THREAD;
+        private Main DB;
+        private TBlJob JOB;
 
         public MainForm()
         {
@@ -33,10 +37,31 @@ namespace ReactionTrainingGUI
                 panelConfig.Enabled = true;
                 panelAttivita.Hide();
                 buttonStart.Text = "START";
+                InitDB();
             }
             catch(Exception ex)
             {
                 Console.WriteLine("MainForm.Init: " + ex.Message);
+            }
+        }
+
+        private void InitDB()
+        {
+            try
+            {
+                string ConStr = "Data Source = rt.db;New=False;Version=3";
+                var connection = new SQLiteConnection(
+                    ConStr
+                    );
+
+                connection.Open();
+
+                DB = new Main(connection, new SqliteVendor());
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("MainForm.InitDB: " + ex.Message);
             }
         }
 
@@ -52,6 +77,12 @@ namespace ReactionTrainingGUI
                     int pausaTo = Int32.Parse(comboPausaTo.SelectedItem.ToString());
                     panelConfig.Enabled = false;
                     STATO = Stato.IN_AZIONE;
+                    JOB = new TBlJob();
+                    JOB.Data = DateTime.Now;
+                    JOB.DURatA = durataWorkout;
+                    JOB.NumEROSensorI = numeroSensori;
+                    JOB.InTeRvAllOMinimO = pausaFrom;
+                    JOB.InTeRvAllOMasSimO = pausaTo;
                     Configurator config = new Configurator("COM5", numeroSensori, pausaFrom, pausaTo, durataWorkout * 1000);
 
                     ThreadStart thread = new ThreadStart(() => FunzionePrincipale(config));
@@ -116,11 +147,52 @@ namespace ReactionTrainingGUI
                     {
                         Console.WriteLine(dato.DifferenceSeconds());
                     }
+
+                    WriteToDB(MAIN_THREAD.LIST_DATI_ACQUISITI);
                 }
             }
             catch (Exception ex)
             {
                 Console.WriteLine("MainForm.FunzionePrincipale: " + ex.Message);
+            }
+        }
+
+        private void WriteToDB(List<DatiAcquisiti> list)
+        {
+            try
+            {
+                string ConStr = "Data Source = rt.db;New=False;Version=3";
+                var connection = new SQLiteConnection(
+                    ConStr
+                    );
+
+                connection.Open();
+
+                var db = new Main(connection, new SqliteVendor());
+
+                db.TBlJob.InsertOnSubmit(JOB);
+                db.SubmitChanges();
+
+                var results = from s in db.TBlJob
+                              orderby s.Data descending
+                              select s;
+
+                TBlJob job = results.ElementAt(0);
+                Console.WriteLine("job insert:" + job.ID + "|" + job.Data);
+                foreach (DatiAcquisiti dato in list)
+                {
+                    TBlJobDetail jobDetail = new TBlJobDetail();
+                    jobDetail.IDJob = job.ID;
+                    jobDetail.SensorE = dato.SENSORE.ID;
+                    jobDetail.DataAtTIVAzIonE = dato.DATA_ATTIVAZIONE;
+                    jobDetail.DataDiSatTIVAzIonE = dato.DATA_DISATTIVAZIONE;
+                    db.TBlJobDetail.InsertOnSubmit(jobDetail);
+                    db.SubmitChanges();
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("MainForm.WriteToDB: " + ex.Message);
             }
         }
 
