@@ -30,9 +30,7 @@ namespace Core.ALGORITMO
 
         private int SECONDS;
 
-        public event Action<int> SecondiRimanenti;
-
-        
+        public event Action<int> SecondiRimanenti;     
 
         public MainThread(Configurator aConfigurator)
         {
