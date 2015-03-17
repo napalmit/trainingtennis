@@ -13,3 +13,8 @@ D:\Sviluppo\trainingtennis\ReactionTraining\Core\bin\Release\Core.pdb
 D:\Sviluppo\trainingtennis\ReactionTraining\Core\obj\Release\Core.csprojResolveAssemblyReference.cache
 D:\Sviluppo\trainingtennis\ReactionTraining\Core\obj\Release\Core.dll
 D:\Sviluppo\trainingtennis\ReactionTraining\Core\obj\Release\Core.pdb
+D:\Sviluppo_Git\trainingtennis\ReactionTraining\Core\bin\Release\Core.dll
+D:\Sviluppo_Git\trainingtennis\ReactionTraining\Core\bin\Release\Core.pdb
+D:\Sviluppo_Git\trainingtennis\ReactionTraining\Core\obj\Release\Core.csprojResolveAssemblyReference.cache
+D:\Sviluppo_Git\trainingtennis\ReactionTraining\Core\obj\Release\Core.dll
+D:\Sviluppo_Git\trainingtennis\ReactionTraining\Core\obj\Release\Core.pdb

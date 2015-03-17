@@ -38,11 +38,13 @@
             this.comboPausaTo = new System.Windows.Forms.ComboBox();
             this.label4 = new System.Windows.Forms.Label();
             this.panelConfig = new System.Windows.Forms.Panel();
+            this.comboSeriale = new System.Windows.Forms.ComboBox();
+            this.label6 = new System.Windows.Forms.Label();
             this.buttonStart = new System.Windows.Forms.Button();
             this.panelAttivita = new System.Windows.Forms.Panel();
             this.lblDurata = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
+            this.buttonChiusuraSerial = new System.Windows.Forms.Button();
             this.panelConfig.SuspendLayout();
             this.panelAttivita.SuspendLayout();
             this.SuspendLayout();
@@ -164,6 +166,8 @@
             // 
             // panelConfig
             // 
+            this.panelConfig.Controls.Add(this.comboSeriale);
+            this.panelConfig.Controls.Add(this.label6);
             this.panelConfig.Controls.Add(this.label1);
             this.panelConfig.Controls.Add(this.label4);
             this.panelConfig.Controls.Add(this.comboSensori);
@@ -176,6 +180,31 @@
             this.panelConfig.Name = "panelConfig";
             this.panelConfig.Size = new System.Drawing.Size(1007, 81);
             this.panelConfig.TabIndex = 8;
+            // 
+            // comboSeriale
+            // 
+            this.comboSeriale.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboSeriale.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.comboSeriale.FormattingEnabled = true;
+            this.comboSeriale.Items.AddRange(new object[] {
+            "1",
+            "2",
+            "3",
+            "4"});
+            this.comboSeriale.Location = new System.Drawing.Point(873, 30);
+            this.comboSeriale.Name = "comboSeriale";
+            this.comboSeriale.Size = new System.Drawing.Size(93, 28);
+            this.comboSeriale.TabIndex = 9;
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label6.Location = new System.Drawing.Point(869, 6);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(97, 20);
+            this.label6.TabIndex = 8;
+            this.label6.Text = "Porta seriale";
             // 
             // buttonStart
             // 
@@ -217,22 +246,22 @@
             this.label5.TabIndex = 8;
             this.label5.Text = "Tempo Residuo:";
             // 
-            // button1
+            // buttonChiusuraSerial
             // 
-            this.button1.Location = new System.Drawing.Point(875, 101);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 11;
-            this.button1.Text = "button1";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.buttonChiusuraSerial.Location = new System.Drawing.Point(929, 90);
+            this.buttonChiusuraSerial.Name = "buttonChiusuraSerial";
+            this.buttonChiusuraSerial.Size = new System.Drawing.Size(75, 47);
+            this.buttonChiusuraSerial.TabIndex = 11;
+            this.buttonChiusuraSerial.Text = "CHIUSURA SERIAL";
+            this.buttonChiusuraSerial.UseVisualStyleBackColor = true;
+            this.buttonChiusuraSerial.Click += new System.EventHandler(this.button1_Click);
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1008, 562);
-            this.Controls.Add(this.button1);
+            this.ClientSize = new System.Drawing.Size(1008, 561);
+            this.Controls.Add(this.buttonChiusuraSerial);
             this.Controls.Add(this.panelAttivita);
             this.Controls.Add(this.buttonStart);
             this.Controls.Add(this.panelConfig);
@@ -265,7 +294,9 @@
         private System.Windows.Forms.Panel panelAttivita;
         private System.Windows.Forms.Label lblDurata;
         private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button buttonChiusuraSerial;
+        private System.Windows.Forms.ComboBox comboSeriale;
+        private System.Windows.Forms.Label label6;
     }
 }
 

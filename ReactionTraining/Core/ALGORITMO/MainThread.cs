@@ -19,6 +19,7 @@ namespace Core.ALGORITMO
         private Sensore SENSORE_USCITO;
         private bool CYCLE = true;
         private bool CYCLE_SECOND = true;
+        private bool CYCLE_TIME = true;
         private DatiAcquisiti DATO_ACQUISITO;
 
         public List<DatiAcquisiti> LIST_DATI_ACQUISITI { get; private set; }
@@ -99,7 +100,6 @@ namespace Core.ALGORITMO
             }
         }
 
-
         private void CountDownStart(int millesec)
         {
             try
@@ -171,17 +171,18 @@ namespace Core.ALGORITMO
         {
             try
             {
-                bool cycle = true;
+                
                 DateTime dataStop = DateTime.Now.AddMilliseconds(CONFIGURATOR.DURATA);
-                while (cycle)
+                while (CYCLE_TIME)
                 {
                     timeThread.WaitOne(Timeout.Infinite);
                     Thread.Sleep(1000);
                     SECONDS--;
                     if (SECONDS == 0)
                     {
-                        cycle = false;
+                        CYCLE_TIME = false;
                         CYCLE = false;
+                        CYCLE_SECOND = false;
                     }                        
                     else
                     {
@@ -269,6 +270,14 @@ namespace Core.ALGORITMO
         public void CloseSerialPort()
         {
             RELE.Close();
+            StopThread();
+        }
+
+        public void StopThread()
+        {
+            CYCLE_TIME = false;
+            CYCLE = false;
+            CYCLE_SECOND = false;
         }
     }
 }

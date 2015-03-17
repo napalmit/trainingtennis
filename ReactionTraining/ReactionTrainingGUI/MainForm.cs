@@ -7,6 +7,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Data.SQLite;
 using System.Drawing;
+using System.IO.Ports;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -37,6 +38,16 @@ namespace ReactionTrainingGUI
                 panelConfig.Enabled = true;
                 panelAttivita.Hide();
                 buttonStart.Text = "START";
+                var ports = SerialPort.GetPortNames();
+                comboSeriale.DataSource = ports;
+                comboSeriale.SelectedIndex = 0;
+
+                //valori di default
+                comboSensori.SelectedIndex = 1;
+                comboDurataWorkout.SelectedIndex = 4;
+                comboPausaFrom.SelectedIndex = 5;
+                comboPausaTo.SelectedIndex = 7;
+                //end
                 InitDB();
             }
             catch(Exception ex)
@@ -83,7 +94,8 @@ namespace ReactionTrainingGUI
                     JOB.NumEROSensorI = numeroSensori;
                     JOB.InTeRvAllOMinimO = pausaFrom;
                     JOB.InTeRvAllOMasSimO = pausaTo;
-                    Configurator config = new Configurator("COM5", numeroSensori, pausaFrom, pausaTo, durataWorkout * 1000);
+
+                    Configurator config = new Configurator(comboSeriale.SelectedItem.ToString(), numeroSensori, pausaFrom, pausaTo, durataWorkout * 1000);
 
                     ThreadStart thread = new ThreadStart(() => FunzionePrincipale(config));
                     Thread t = new Thread(thread);
