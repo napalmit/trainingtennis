@@ -29,15 +29,15 @@ class ReleUSB(object):
             if self.SERIAL.isOpen() :
                 self.SERIAL.close()
             self.SERIAL.open()
-            print(self.TEST)
+            #print(self.TEST)
             t = LetturaSeriale(self)
             t.EventoDatoRicevuto += DatoRicevutoRele
             t.start()
-            time.sleep(1)
-            self.InviaComando('6')
+            #time.sleep(1)
+            #self.InviaComando('6')
             
-            while True:
-                time.sleep(.5)
+            #while True:
+            #    time.sleep(.5)
                 #print(self.TEST)
         except Exception as e :
             print("errore serial: " +  str(e))
@@ -68,22 +68,23 @@ class ReleUSB(object):
     def GetCmdAndResponse(self, sensorNumber):
         lista = []
         try:
+            print(sensorNumber)
             if sensorNumber == 1:
-                lista[Comandi.AccendiRelay1];
-                lista[Risposte.AccendiRelay1];
-                lista[Comandi.SpegniRelay1];
-                lista[Risposte.SpegniRelay1];
-                lista[Comandi.Ingresso1];
-                lista[Risposte.Ingresso1Alto];
-                lista[Risposte.Ingresso1Basso];
+                lista.append(Comandi.AccendiRelay1);
+                lista.append(Risposte.AccendiRelay1);
+                lista.append(Comandi.SpegniRelay1);
+                lista.append(Risposte.SpegniRelay1);
+                lista.append(Comandi.Ingresso1);
+                lista.append(Risposte.Ingresso1Alto);
+                lista.append(Risposte.Ingresso1Basso);
             elif sensorNumber == 2:
-                lista[Comandi.AccendiRelay2];
-                lista[Risposte.AccendiRelay2];
-                lista[Comandi.SpegniRelay2];
-                lista[Risposte.SpegniRelay2];
-                lista[Comandi.Ingresso2];
-                lista[Risposte.Ingresso2Alto];
-                lista[Risposte.Ingresso2Basso];
+                lista.append(Comandi.AccendiRelay2);
+                lista.append(Risposte.AccendiRelay2);
+                lista.append(Comandi.SpegniRelay2);
+                lista.append(Risposte.SpegniRelay2);
+                lista.append(Comandi.Ingresso2);
+                lista.append(Risposte.Ingresso2Alto);
+                lista.append(Risposte.Ingresso2Basso);
             elif sensorNumber == 3:
                 lista[Comandi.AccendiRelay3];
                 lista[Risposte.AccendiRelay3];
@@ -110,7 +111,6 @@ def DatoRicevutoRele(dato, rele):
     rele.EventoDatoRicevuto(dato)     
         
 import threading 
-import time
 class LetturaSeriale(threading.Thread):
     RELE = 0;
     def __init__(self, releUSB):
