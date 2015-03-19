@@ -4,6 +4,7 @@ Created on 18/mar/2015
 @author: Luigi
 '''
 import serial
+from it.napalm.core.object.Event import Event
 from it.napalm.core.progettihwsw.Comandi import Comandi
 from it.napalm.core.progettihwsw.Risposte import Risposte
 class ReleUSB(object):
@@ -12,8 +13,9 @@ class ReleUSB(object):
     TEST = '1'
     
     def __init__(self, comPort):
-        print('ISt')
+        #print('ISt')
         self.COM = comPort
+        self.EventoDatoRicevuto = Event()
         
     def Connect(self):
         try:
@@ -29,15 +31,17 @@ class ReleUSB(object):
             self.SERIAL.open()
             print(self.TEST)
             t = LetturaSeriale(self)
+            t.EventoDatoRicevuto += DatoRicevutoRele
             t.start()
             time.sleep(1)
-            self.InviaComando('0')
+            self.InviaComando('6')
             
             while True:
                 time.sleep(.5)
-                print(self.TEST)
+                #print(self.TEST)
         except Exception as e :
             print("errore serial: " +  str(e))
+            
             
     def Clean(self):
         try:
@@ -100,7 +104,11 @@ class ReleUSB(object):
             print("errore GetCmdAndResponse: " +  str(e))
             
         return lista
-  
+    
+    
+def DatoRicevutoRele(dato, rele):
+    rele.EventoDatoRicevuto(dato)     
+        
 import threading 
 import time
 class LetturaSeriale(threading.Thread):
@@ -108,6 +116,7 @@ class LetturaSeriale(threading.Thread):
     def __init__(self, releUSB):
         threading.Thread.__init__(self)
         self.RELE = releUSB
+        self.EventoDatoRicevuto = Event()
     
     def run(self):
         try:
@@ -116,15 +125,20 @@ class LetturaSeriale(threading.Thread):
                 for byte in self.RELE.SERIAL.read(self.RELE.SERIAL.inWaiting()): 
                     last += chr(byte)
                     test = bytes(last, "utf-8").decode("utf-8")
-                    if test == 'A' :
-                        self.RELE.TEST = '2'
+                    self.EventoDatoRicevuto(test, self.RELE)
                     if len(last) > 0:
                         last = ''
         except Exception as e :
             print("errore run LetturaSeriale:  " +  str(e))
 
 
+def RicevoDato(dato):
+    if dato.isalpha() :
+        print ("Ricevo: " + dato)
+
 if __name__ == "__main__":
     rele = ReleUSB('COM14')
+    rele.EventoDatoRicevuto += RicevoDato
 
     rele.Connect()
+
